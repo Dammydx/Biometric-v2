@@ -15,7 +15,7 @@ function handleSignUp(event) {
 
     localStorage.setItem('user', JSON.stringify(userData)); // No change
 
-    alert('Sign up successful! You will be redirected to the attendance page.'); // No change
+    alert('Sign up Successful!😁 You will be redirected to the attendance page.'); // No change
     window.location.href = "attendance.html"; // Redirect to attendance page
 }
 
@@ -29,10 +29,10 @@ function handleSignIn(event) {
     const storedUser = JSON.parse(localStorage.getItem('user')); // No change
 
     if (storedUser && storedUser.email === email && storedUser.password === password) { // No change
-        alert('Login successful! Redirecting to attendance page.'); // No change
+        alert('Login successful!🙂 Redirecting to attendance page.'); // No change
         window.location.href = "attendance.html"; // Redirect to attendance page
     } else {
-        alert('Invalid email or password. Please try again.'); // No change
+        alert('Invalid email or password😥---Not Registered Sign up!😉'); // No change
     }
 }
 
@@ -62,7 +62,7 @@ function markAttendance(event) {
         status.innerHTML = `Attendance marked for ${storedUser.name} (${enteredDepartment}) at ${currentTime}`; // No change
         status.style.color = 'green'; // No change
     } else {
-        status.innerHTML = 'Error: Name does not match the registered name.'; // No change
+        status.innerHTML = 'Error: Name does not match the registered.😕'; // No change
         status.style.color = 'red'; // No change
     }
 }
@@ -78,6 +78,6 @@ function adminLogin(event) {
     if (username === 'admin' && password === 'admin123') { 
         window.location.href = "admin-dashboard.html"; // Redirect to admin dashboard
     } else {
-        alert('Invalid username or password!'); // No change
+        alert('Invalid are you an Admin Dammy sees all!😡'); // No change
     }
 }
