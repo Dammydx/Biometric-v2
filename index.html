@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biometric Attendance System</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .loading-container {
+            text-align: center;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Add the blue text */
+        .loading-text {
+            color: #3498db; /* Light blue color */
+            font-size: 1.5em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading-container">
+        <div class="loader"></div>
+        <div class="loading-text">Biometric Attendance System v1.3</div> <!-- Added text -->
+    </div>
+
+    <script>
+        // Redirect to the home.html page after 4 seconds
+        setTimeout(function () {
+            window.location.href = "home.html";
+        }, 3550); // You can change this to any desired timeout (e.g., 5000ms for 5 seconds)
+    </script>
+
+</body>
+</html>

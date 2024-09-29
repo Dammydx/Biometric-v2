@@ -1,0 +1,115 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #090911;     
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+/* Body Back ground colour :- cream white- #F5F5DC  cream green- #dcf5dc*/
+.welcome-page {
+    background: url('background-image.jpg') no-repeat center center/cover;
+}
+
+.welcome-container {
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-container h1 {
+    font-size: 3em;
+    margin-bottom: 30px;
+}
+
+.welcome-buttons .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: rgba(30, 144, 255, 0.8);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    transition: background-color 0.3s;
+}
+
+.welcome-buttons .btn:hover {
+    background-color: rgba(30, 144, 255, 1);
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+h2 {
+    color: #1E90FF;
+}
+
+h3 {
+    color: #90e7f7;
+}
+
+h4 {
+    color: #d1e2f3;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #32CD32;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #28A745;
+}
+
+.biometric img {
+    width: 100px;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+}
+
+#status {
+    color: #32CD32;
+    font-weight: bold;
+}
+
+a {
+    color: #1E90FF;
+    text-decoration: none;
+}
+
+/* FOR THE BOTTOM TEXT IN HOME PAGE BY IREWOLE DARAMOLA */
+
+.footer-text {
+    position: fixed; 
+    bottom: 15px; 
+    right: 15px; 
+    font-size: 20px; 
+    color: #dcf5dc; 
+    background-color: #f1f1f100; 
+    padding: 5px; 
+    border-radius: 5px; 
+}

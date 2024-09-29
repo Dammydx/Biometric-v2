@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Biometric Attendance System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #downloadExcel {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #downloadExcel:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Attendance Records</h2>
+
+        <!-- Changed: Download as Excel button -->
+        <button id="downloadExcel">Download as Excel</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceTable">
+                <!-- Records will be populated here -->
+            </tbody>
+        </table>
+        <a href="home.html">Logout</a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || [];
+            const attendanceTable = document.getElementById('attendanceTable');
+            
+            attendanceData.forEach(record => {
+                const row = document.createElement('tr');
+                const [date, time] = record.time.split(', ');
+                row.innerHTML = `
+                    <td>${record.name}</td>
+                    <td>${record.department}</td>
+                    <td>${date}</td>
+                    <td>${time}</td>
+                `;
+                attendanceTable.appendChild(row);
+            });
+        });
+
+        // Changed: Function to download attendance data as Excel document
+        document.getElementById('downloadExcel').addEventListener('click', () => {
+            const attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || [];
+            if (attendanceData.length === 0) {
+                alert('No attendance records to download.');
+                return;
+            }
+
+            // Create CSV content for Excel
+            let csvContent = "data:text/csv;charset=utf-8,Name,Department,Date,Time\n";
+            attendanceData.forEach(record => {
+                const [date, time] = record.time.split(', ');
+                csvContent += `${record.name},${record.department},${date},${time}\n`;
+            });
+
+            // Create download link for CSV
+            const encodedUri = encodeURI(csvContent);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = encodedUri;
+            downloadLink.download = 'AttendanceRecords.csv';
+
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        });
+    </script>
+</body>
+</html>

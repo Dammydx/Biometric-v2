@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance - Biometric Attendance System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Mark Your Attendance</h2>
+        <form id="attendanceForm" onsubmit="markAttendance(event)">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="text" id="department" placeholder="Department" required>
+            <div class="biometric">
+                <img src="biometric-placeholder.png" alt="Biometric Scanner" id="fingerprint" onclick="markAttendance(event)">
+            </div>
+            <p id="status"></p>
+        </form>
+        <a href="home.html">Logout</a>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Biometric Attendance System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Login</h2>
+        <form onsubmit="adminLogin(event)">
+            <input type="text" id="admin-username" placeholder="Username" required>
+            <input type="password" id="admin-password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p><a href="home.html">Logout</a></p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script> <!-- Added for password hashing -->
+    <script>
+        const hashedPassword = localStorage.getItem('adminPassword') || CryptoJS.SHA256('admin123').toString();
+        if (!localStorage.getItem('adminPassword')) {
+            localStorage.setItem('adminPassword', hashedPassword);
+        }
+
+        function adminLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            const hashedInput = CryptoJS.SHA256(password).toString();
+
+            if (username === 'admin' && hashedInput === localStorage.getItem('adminPassword')) {
+                window.location.href = "admin-dashboard.html";
+            } else {
+                alert('Invalid username or password!');
+            }
+        }
+    </script>
+</body>
+</html>
