@@ -2,37 +2,38 @@
 function handleSignUp(event) {
     event.preventDefault();
 
-    const name = document.getElementById('signup-name').value; // No change
-    const email = document.getElementById('signup-email').value; // No change
-    const password = document.getElementById('signup-password').value; // No change
+    // Trim spaces and convert the name to lowercase before storing it
+    const name = document.getElementById('signup-name').value.trim().toLowerCase();
+    const email = document.getElementById('signup-email').value.trim();
+    const password = document.getElementById('signup-password').value;
 
     // Save user data in local storage
     const userData = {
-        name,
+        name,  // Store name already processed (trimmed and lowercase)
         email,
         password
     };
 
-    localStorage.setItem('user', JSON.stringify(userData)); // No change
+    localStorage.setItem('user', JSON.stringify(userData));
 
-    alert('Sign up Successful!😁 You will be redirected to the attendance page.'); // No change
-    window.location.href = "attendance.html"; // Redirect to attendance page
+    alert('Sign up Successful!😁 You will be redirected to the attendance page.');
+    window.location.href = "attendance.html";  // Redirect to attendance page
 }
 
 // Handle user sign-in by validating against stored data
 function handleSignIn(event) {
     event.preventDefault();
 
-    const email = document.getElementById('login-email').value; // No change
-    const password = document.getElementById('login-password').value; // No change
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
 
-    const storedUser = JSON.parse(localStorage.getItem('user')); // No change
+    const storedUser = JSON.parse(localStorage.getItem('user'));
 
-    if (storedUser && storedUser.email === email && storedUser.password === password) { // No change
-        alert('Login successful!🙂 Redirecting to attendance page.'); // No change
-        window.location.href = "attendance.html"; // Redirect to attendance page
+    if (storedUser && storedUser.email === email && storedUser.password === password) {
+        alert('Login successful!🙂 Redirecting to attendance page.');
+        window.location.href = "attendance.html";  // Redirect to attendance page
     } else {
-        alert('Invalid email or password😥---Not Registered Sign up!😉'); // No change
+        alert('Invalid email or password😥---Not Registered Sign up!😉');
     }
 }
 
@@ -40,30 +41,32 @@ function handleSignIn(event) {
 function markAttendance(event) {
     event.preventDefault();
 
-    const enteredName = document.getElementById('name').value.trim().toLowerCase(); // No change
-    const enteredDepartment = document.getElementById('department').value.trim(); // No change
-    const status = document.getElementById('status'); // No change
+    // Trim spaces and convert entered name to lowercase before comparing
+    const enteredName = document.getElementById('name').value.trim().toLowerCase();
+    const enteredDepartment = document.getElementById('department').value.trim();
+    const status = document.getElementById('status');
 
-    const storedUser = JSON.parse(localStorage.getItem('user')); // No change
+    const storedUser = JSON.parse(localStorage.getItem('user'));
 
-    if (storedUser && storedUser.name.toLowerCase() === enteredName) { // No change
-        const currentTime = new Date().toLocaleString(); // No change
+    // Compare names in lowercase and trimmed format
+    if (storedUser && storedUser.name === enteredName) {
+        const currentTime = new Date().toLocaleString();
         const attendanceRecord = {
             name: storedUser.name,  // Use the stored name to maintain consistency
-            department: enteredDepartment, // No change
-            time: currentTime // No change
+            department: enteredDepartment,
+            time: currentTime
         };
 
         // Save to local storage
-        let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || []; // No change
-        attendanceData.push(attendanceRecord); // No change
-        localStorage.setItem('attendanceData', JSON.stringify(attendanceData)); // No change
+        let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || [];
+        attendanceData.push(attendanceRecord);
+        localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
 
-        status.innerHTML = `Attendance marked for ${storedUser.name} (${enteredDepartment}) at ${currentTime}`; // No change
-        status.style.color = 'green'; // No change
+        status.innerHTML = `Attendance marked for ${storedUser.name} (${enteredDepartment}) at ${currentTime}`;
+        status.style.color = 'green';
     } else {
-        status.innerHTML = 'Error: Name does not match the registered.😕'; // No change
-        status.style.color = 'red'; // No change
+        status.innerHTML = 'Error: Name does not match the registered.😕';
+        status.style.color = 'red';
     }
 }
 
@@ -71,13 +74,13 @@ function markAttendance(event) {
 function adminLogin(event) {
     event.preventDefault();
 
-    const username = document.getElementById('admin-username').value; // No change
-    const password = document.getElementById('admin-password').value; // No change
+    const username = document.getElementById('admin-username').value.trim();
+    const password = document.getElementById('admin-password').value.trim();
 
-    // Changed: Updated the admin password to 'admin123'
-    if (username === 'admin' && password === 'admin123') { 
-        window.location.href = "admin-dashboard.html"; // Redirect to admin dashboard
+    if (username === 'admin' && password === 'admin123') {
+        window.location.href = "admin-dashboard.html";
     } else {
-        alert('Invalid are you an Admin Dammy sees all!😡'); // No change
+        alert('Invalid are you an Admin Dammy sees all!😡');
     }
 }
+    
