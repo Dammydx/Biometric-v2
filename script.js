@@ -1,123 +1,86 @@
-// Handle user sign-up and save to local storage with optional fingerprint registration
+// Handle user sign-up and save to local storage
 function handleSignUp(event) {
     event.preventDefault();
 
-    const name = document.getElementById('signup-name').value.trim();
+    // Trim spaces and convert the name to lowercase before storing it
+    const name = document.getElementById('signup-name').value.trim().toLowerCase();
     const email = document.getElementById('signup-email').value.trim();
-    const password = document.getElementById('signup-password').value.trim();
+    const password = document.getElementById('signup-password').value;
 
     // Save user data in local storage
     const userData = {
-        name,
+        name,  // Store name already processed (trimmed and lowercase)
         email,
-        password,
-        hasFingerprint: false // Initialize fingerprint flag
+        password
     };
 
-    // Attempt to register user's fingerprint
-    registerUserFingerprint().then(() => {
-        userData.hasFingerprint = true; // Set flag if fingerprint is registered
-        localStorage.setItem('user', JSON.stringify(userData)); // Save user data with fingerprint flag
-        alert('Sign up and fingerprint registration successful! Redirecting to the attendance page.');
-        window.location.href = "attendance.html";
-    }).catch((err) => {
-        localStorage.setItem('user', JSON.stringify(userData)); // Save user data without fingerprint
-        document.getElementById('status').innerText = 'Fingerprint registration failed or not supported. You can still proceed by clicking the picture to mark attendance.';
-        console.warn('Fingerprint registration failed:', err);
-    });
+    localStorage.setItem('user', JSON.stringify(userData));
+
+    alert('Sign up Successful!😁 You will be redirected to the attendance page.');
+    window.location.href = "attendance.html";  // Redirect to attendance page
 }
 
-// Function to register fingerprint using WebAuthn API
-function registerUserFingerprint() {
-    return new Promise((resolve, reject) => {
-        if (window.PublicKeyCredential) {
-            navigator.credentials.create({
-                publicKey: {
-                    challenge: new Uint8Array(32), // Random challenge
-                    rp: { name: "Biometric Attendance System" },
-                    user: {
-                        id: new Uint8Array(16), // Random user ID
-                        name: document.getElementById('signup-email').value.trim(),
-                        displayName: document.getElementById('signup-name').value.trim(),
-                    },
-                    pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-                    authenticatorSelection: {
-                        authenticatorAttachment: "platform", // Use device's built-in authenticator
-                        userVerification: "required" // Require biometric verification
-                    },
-                    timeout: 60000, // Timeout for the operation
-                }
-            }).then((credential) => {
-                localStorage.setItem('credential', JSON.stringify(credential)); // Save the credential
-                resolve(); // Resolve promise on success
-            }).catch((err) => {
-                reject(err); // Reject promise if registration fails
-            });
-        } else {
-            reject('WebAuthn API not supported on this device.');
-        }
-    });
-}
-
-// Function to mark attendance and check for fingerprint or fallback
-function markAttendance(event) {
+// Handle user sign-in by validating against stored data
+function handleSignIn(event) {
     event.preventDefault();
 
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    const status = document.getElementById('status');
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
 
-    if (storedUser && storedUser.hasFingerprint) {
-        // If fingerprint is registered, prompt for fingerprint authentication
-        authenticateWithFingerprint().then(() => {
-            markAttendanceRecord(storedUser);
-        }).catch((err) => {
-            status.innerHTML = 'Fingerprint authentication failed. Try again or use fallback.';
-            status.style.color = 'red';
-            console.error('Fingerprint authentication error:', err);
-        });
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+
+    if (storedUser && storedUser.email === email && storedUser.password === password) {
+        alert('Login successful!🙂 Redirecting to attendance page.');
+        window.location.href = "attendance.html";  // Redirect to attendance page
     } else {
-        // No fingerprint registered, use fallback (click the picture)
-        markAttendanceRecord(storedUser);
+        alert('Invalid email or password😥---Not Registered Sign up!😉');
     }
 }
 
-// Function to authenticate with fingerprint (for registered users)
-function authenticateWithFingerprint() {
-    return new Promise((resolve, reject) => {
-        if (window.PublicKeyCredential) {
-            navigator.credentials.get({
-                publicKey: {
-                    challenge: new Uint8Array(32), // Random challenge for security
-                    timeout: 60000, // Timeout
-                    userVerification: "required" // Require user verification
-                }
-            }).then((credential) => {
-                resolve(); // Fingerprint authenticated successfully
-            }).catch((err) => {
-                reject(err); // Error during authentication
-            });
-        } else {
-            reject('WebAuthn API not supported on this device.');
-        }
-    });
-}
+// Function to mark attendance and store in local storage
+function markAttendance(event) {
+    event.preventDefault();
 
-// Helper function to mark attendance (used in both cases: fingerprint or fallback)
-function markAttendanceRecord(storedUser) {
+    // Trim spaces and convert entered name to lowercase before comparing
+    const enteredName = document.getElementById('name').value.trim().toLowerCase();
     const enteredDepartment = document.getElementById('department').value.trim();
-    const currentTime = new Date().toLocaleString();
-
-    const attendanceRecord = {
-        name: storedUser.name,
-        department: enteredDepartment,
-        time: currentTime
-    };
-
-    let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || [];
-    attendanceData.push(attendanceRecord);
-    localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
-
     const status = document.getElementById('status');
-    status.innerHTML = `Attendance marked for ${storedUser.name} (${enteredDepartment}) at ${currentTime}`;
-    status.style.color = 'green';
+
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+
+    // Compare names in lowercase and trimmed format
+    if (storedUser && storedUser.name === enteredName) {
+        const currentTime = new Date().toLocaleString();
+        const attendanceRecord = {
+            name: storedUser.name,  // Use the stored name to maintain consistency
+            department: enteredDepartment,
+            time: currentTime
+        };
+
+        // Save to local storage
+        let attendanceData = JSON.parse(localStorage.getItem('attendanceData')) || [];
+        attendanceData.push(attendanceRecord);
+        localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
+
+        status.innerHTML = `Attendance marked for ${storedUser.name} (${enteredDepartment}) at ${currentTime}`;
+        status.style.color = 'green';
+    } else {
+        status.innerHTML = 'Error: Name does not match the registered.😕';
+        status.style.color = 'red';
+    }
 }
+
+// Function to handle admin login
+function adminLogin(event) {
+    event.preventDefault();
+
+    const username = document.getElementById('admin-username').value.trim();
+    const password = document.getElementById('admin-password').value.trim();
+
+    if (username === 'admin' && password === 'admin123') {
+        window.location.href = "admin-dashboard.html";
+    } else {
+        alert('Invalid are you an Admin Dammy sees all!😡');
+    }
+}
+
