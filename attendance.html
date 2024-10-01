@@ -9,11 +9,11 @@
 <body>
     <div class="container">
         <h2>Mark Your Attendance</h2>
-        <form id="attendanceForm" onsubmit="checkAndMarkAttendance(event)">
+        <form id="attendanceForm" onsubmit="markAttendance(event)">
             <input type="text" id="name" placeholder="Full Name" required>
             <input type="text" id="department" placeholder="Department" required>
             <div class="biometric">
-                <img src="biometric-placeholder.png" alt="Biometric Scanner" id="fingerprint" onclick="checkAndMarkAttendance(event)">
+                <img src="biometric-placeholder.png" alt="Biometric Scanner" id="fingerprint" onclick="markAttendance(event)">
             </div>
             <p id="status"></p>
         </form>
